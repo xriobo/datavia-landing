@@ -1,0 +1,196 @@
+---
+// Cadena de huellas real (SHA-256 vía crypto.subtle, en el navegador).
+// No es una animación: es el mismo cálculo que encadena billing_record en Custia.
+---
+
+<div class="hash-demo" data-hash-demo>
+	<table class="hash-demo__table">
+		<thead>
+			<tr>
+				<th scope="col">Registro</th>
+				<th scope="col">Importe</th>
+				<th scope="col">Huella anterior</th>
+				<th scope="col">Huella</th>
+			</tr>
+		</thead>
+		<tbody data-hash-body>
+			<tr>
+				<td colspan="4" class="hash-demo__loading mono">calculando SHA-256…</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="hash-demo__controls">
+		<button type="button" class="button button--ghost" data-action="tamper">
+			Alterar el importe del registro 2, después de sellado
+		</button>
+	</div>
+
+	<p class="hash-demo__status mono" data-status role="status" aria-live="polite"></p>
+</div>
+
+<style>
+	.hash-demo {
+		margin-top: var(--space-m);
+		padding: var(--space-m);
+		border-radius: var(--radius);
+		background: var(--ink-raised);
+		border: 1px solid color-mix(in srgb, var(--text-hi) 10%, transparent);
+		overflow-x: auto;
+	}
+
+	.hash-demo__table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: var(--step--1);
+		min-width: 30rem;
+	}
+
+	.hash-demo__table th {
+		text-align: left;
+		font-family: var(--font-mono);
+		font-weight: 500;
+		color: var(--text-lo);
+		padding-bottom: 0.6em;
+		border-bottom: 1px solid color-mix(in srgb, var(--text-hi) 14%, transparent);
+	}
+
+	.hash-demo__table td {
+		padding-block: 0.6em;
+		border-bottom: 1px solid color-mix(in srgb, var(--text-hi) 8%, transparent);
+		font-family: var(--font-mono);
+		white-space: nowrap;
+	}
+
+	.hash-demo__loading {
+		color: var(--text-lo);
+		white-space: normal;
+	}
+
+	tr.is-broken td {
+		color: var(--seal);
+	}
+
+	.hash-demo__controls {
+		margin-top: var(--space-s);
+	}
+
+	.hash-demo__status {
+		margin-top: var(--space-s);
+		min-height: 1.5em;
+		font-size: var(--step--1);
+		color: var(--text-lo);
+	}
+
+	.hash-demo__status.is-broken {
+		color: var(--seal);
+	}
+
+	.hash-demo__status.is-ok {
+		color: var(--brass);
+	}
+</style>
+
+<script>
+	type Record = { numero: string; importe: number };
+
+	const GENESIS = '0'.repeat(64);
+
+	const records: Record[] = [
+		{ numero: 'F-2027-00001', importe: 412.0 },
+		{ numero: 'F-2027-00002', importe: 187.5 },
+		{ numero: 'F-2027-00003', importe: 2340.0 },
+	];
+
+	async function sha256(input: string): Promise<string> {
+		const bytes = new TextEncoder().encode(input);
+		const digest = await crypto.subtle.digest('SHA-256', bytes);
+		return Array.from(new Uint8Array(digest))
+			.map((b) => b.toString(16).padStart(2, '0'))
+			.join('');
+	}
+
+	function fold(input: string, visibleStart = 8, visibleEnd = 6): string {
+		if (input.length <= visibleStart + visibleEnd + 1) return input;
+		return `${input.slice(0, visibleStart)}…${input.slice(-visibleEnd)}`;
+	}
+
+	function money(value: number): string {
+		return `${value.toFixed(2).replace('.', ',')} €`;
+	}
+
+	async function buildChain(items: Record[]): Promise<string[]> {
+		const hashes: string[] = [];
+		let previous = GENESIS;
+		for (const item of items) {
+			const hash = await sha256(`${previous}|${item.numero}|${item.importe.toFixed(2)}`);
+			hashes.push(hash);
+			previous = hash;
+		}
+		return hashes;
+	}
+
+	async function mount(root: HTMLElement) {
+		const body = root.querySelector<HTMLElement>('[data-hash-body]');
+		const statusEl = root.querySelector<HTMLElement>('[data-status]');
+		const tamperBtn = root.querySelector<HTMLButtonElement>('[data-action="tamper"]');
+		if (!body || !statusEl || !tamperBtn) return;
+
+		// La huella grabada: se calcula una vez y ya no cambia. Es "lo que está en disco".
+		const storedHashes = await buildChain(records);
+		let tampered = false;
+		const originalImporte = records[1].importe;
+		const alteredImporte = 800.0;
+
+		async function render() {
+			const rows = await Promise.all(
+				records.map(async (record, i) => {
+					const previousStored = i === 0 ? GENESIS : storedHashes[i - 1];
+					const currentImporte = i === 1 && tampered ? alteredImporte : record.importe;
+					const recomputed = await sha256(`${previousStored}|${record.numero}|${currentImporte.toFixed(2)}`);
+					const broken = recomputed !== storedHashes[i];
+					return { record, currentImporte, previousStored, recomputed, broken, i };
+				}),
+			);
+
+			body.innerHTML = rows
+				.map(
+					({ record, currentImporte, previousStored, recomputed, broken, i }) => `
+					<tr class="${broken ? 'is-broken' : ''}">
+						<td>${record.numero}</td>
+						<td>${money(currentImporte)}${i === 1 && tampered ? ' <span aria-hidden="true">✎</span>' : ''}</td>
+						<td title="${previousStored}">${i === 0 ? 'génesis' : fold(previousStored)}</td>
+						<td title="${recomputed}">${fold(recomputed)}</td>
+					</tr>
+				`,
+				)
+				.join('');
+
+			const brokenRow = rows.find((r) => r.broken);
+			if (brokenRow) {
+				statusEl.textContent = `Huella recalculada del registro ${brokenRow.i + 1} no coincide con la grabada: el cambio se detecta solo, sin comparar nada a mano.`;
+				statusEl.classList.add('is-broken');
+				statusEl.classList.remove('is-ok');
+			} else {
+				statusEl.textContent = 'Las tres huellas coinciden con lo grabado. Cadena íntegra.';
+				statusEl.classList.add('is-ok');
+				statusEl.classList.remove('is-broken');
+			}
+
+			tamperBtn.textContent = tampered
+				? 'Restaurar el importe original'
+				: 'Alterar el importe del registro 2, después de sellado';
+		}
+
+		tamperBtn.addEventListener('click', () => {
+			tampered = !tampered;
+			void render();
+		});
+
+		void render();
+		void originalImporte; // documenta la intención: nunca se pierde el valor real
+	}
+
+	const demos = document.querySelectorAll<HTMLElement>('[data-hash-demo]');
+	for (const demo of demos) void mount(demo);
+</script>

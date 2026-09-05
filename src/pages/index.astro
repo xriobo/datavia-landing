@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Journey from '../components/Journey.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+	title="datavia — el papeleo que no se puede deshacer"
+	description="datavia construye el software para el papeleo que no admite errores: Capture ya captura facturas y altas en producción, OCR y Custia son el resto del camino."
+>
+	<Header />
+	<main>
+		<Hero />
+		<Journey />
+	</main>
+	<Footer />
+
+	<script>
+		import '../scripts/reveal.ts';
+	</script>
+</Layout>

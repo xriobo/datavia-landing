@@ -1,0 +1,119 @@
+---
+// Fechas del RD-ley 15/2025: obligación VERI*FACTU/RRSIF.
+---
+
+<div class="countdown" data-countdown data-target="2027-01-01T00:00:00+01:00">
+	<div class="countdown__grid" aria-live="off">
+		<div class="countdown__cell">
+			<span class="countdown__num mono" data-unit="days">—</span>
+			<span class="countdown__label">días</span>
+		</div>
+		<div class="countdown__cell">
+			<span class="countdown__num mono" data-unit="hours">—</span>
+			<span class="countdown__label">h</span>
+		</div>
+		<div class="countdown__cell">
+			<span class="countdown__num mono" data-unit="minutes">—</span>
+			<span class="countdown__label">min</span>
+		</div>
+		<div class="countdown__cell">
+			<span class="countdown__num mono" data-unit="seconds">—</span>
+			<span class="countdown__label">s</span>
+		</div>
+	</div>
+	<p class="countdown__caption">
+		hasta el <strong>1 de enero de 2027</strong>, obligatorio para sociedades ·
+		autónomos tienen hasta el 1 de julio de 2027
+	</p>
+</div>
+
+<style>
+	.countdown {
+		margin-top: var(--space-m);
+		padding: var(--space-m);
+		border-radius: var(--radius);
+		background: color-mix(in srgb, var(--brass) 10%, transparent);
+		border: 1px solid color-mix(in srgb, var(--brass) 35%, transparent);
+	}
+
+	.countdown__grid {
+		display: flex;
+		gap: var(--space-m);
+	}
+
+	.countdown__cell {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-width: 3.4em;
+	}
+
+	.countdown__num {
+		font-size: var(--step-3);
+		font-weight: 500;
+		color: var(--brass);
+		line-height: 1;
+	}
+
+	.countdown__label {
+		margin-top: 0.35em;
+		font-family: var(--font-mono);
+		font-size: var(--step--1);
+		color: var(--text-lo);
+	}
+
+	.countdown__caption {
+		margin-top: var(--space-s);
+		font-size: var(--step--1);
+		color: var(--text-lo);
+	}
+
+	.countdown__caption strong {
+		color: var(--text-hi);
+	}
+
+	@media (max-width: 30rem) {
+		.countdown__grid {
+			gap: var(--space-s);
+		}
+		.countdown__cell {
+			min-width: 2.6em;
+		}
+	}
+</style>
+
+<script>
+	function pad(n: number) {
+		return n.toString().padStart(2, '0');
+	}
+
+	function tick(root: HTMLElement) {
+		const target = new Date(root.dataset.target ?? '').getTime();
+		const cells = {
+			days: root.querySelector<HTMLElement>('[data-unit="days"]'),
+			hours: root.querySelector<HTMLElement>('[data-unit="hours"]'),
+			minutes: root.querySelector<HTMLElement>('[data-unit="minutes"]'),
+			seconds: root.querySelector<HTMLElement>('[data-unit="seconds"]'),
+		};
+
+		function render() {
+			const diff = Math.max(0, target - Date.now());
+			const totalSeconds = Math.floor(diff / 1000);
+			const days = Math.floor(totalSeconds / 86400);
+			const hours = Math.floor((totalSeconds % 86400) / 3600);
+			const minutes = Math.floor((totalSeconds % 3600) / 60);
+			const seconds = totalSeconds % 60;
+
+			if (cells.days) cells.days.textContent = days.toString();
+			if (cells.hours) cells.hours.textContent = pad(hours);
+			if (cells.minutes) cells.minutes.textContent = pad(minutes);
+			if (cells.seconds) cells.seconds.textContent = pad(seconds);
+		}
+
+		render();
+		return setInterval(render, 1000);
+	}
+
+	const roots = document.querySelectorAll<HTMLElement>('[data-countdown]');
+	for (const root of roots) tick(root);
+</script>
