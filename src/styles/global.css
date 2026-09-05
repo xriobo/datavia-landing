@@ -13,10 +13,10 @@
 	/* Estado del roadmap */
 	--seal: #ff5b49; /* coral sello — en producción (Capture, CTA) */
 	--seal-dim: #7a3229;
-	--brass: #e8b04b; /* latón — avanzado, sin abrir (Custia) */
-	--brass-dim: #6b551f;
-	--slate: #7a87b0; /* pizarra fría — planeado (OCR) */
-	--slate-dim: #3c415a;
+	--brass: #d4942d; /* latón — avanzado, sin abrir (Custia), más apagado */
+	--brass-dim: #5f4919;
+	--slate: #6b7a9e; /* pizarra — planeado (OCR), más neutra */
+	--slate-dim: #33394a;
 
 	/* Texto */
 	--text-hi: #f5f3ee;
@@ -41,12 +41,12 @@
 	--space-xs: 0.5rem;
 	--space-s: 1rem;
 	--space-m: 1.75rem;
-	--space-l: 3rem;
-	--space-xl: 5.5rem;
-	--space-xxl: 9rem;
+	--space-l: 3.5rem;
+	--space-xl: 6.5rem;
+	--space-xxl: 10.5rem;
 
-	--radius: 14px;
-	--radius-s: 8px;
+	--radius: 8px;
+	--radius-s: 4px;
 	--ease: cubic-bezier(0.16, 1, 0.3, 1);
 	--content-width: 72rem;
 }
@@ -92,6 +92,24 @@ h3,
 p,
 figure {
 	margin: 0;
+}
+
+h1 {
+	font-weight: 700;
+	font-width: 100%;
+}
+
+h2 {
+	font-weight: 700;
+}
+
+h3 {
+	font-weight: 600;
+}
+
+body,
+p {
+	font-weight: 400;
 }
 
 .container {
