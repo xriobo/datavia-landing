@@ -1,0 +1,10 @@
+{
+	// Sin esto, `wrangler deploy` sube los assets pero no los sirve: el Worker
+	// queda con el script vacio de la plantilla y todas las rutas responden
+	// 404 con "error code: 1042".
+	"name": "datavia-landing",
+	"compatibility_date": "2026-09-05",
+	"assets": {
+		"directory": "./dist"
+	}
+}
