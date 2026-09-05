@@ -4,25 +4,25 @@
    ========================================================================== */
 
 :root {
-	/* Superficie */
-	--ink: #161a2b; /* fondo — índigo tinta */
-	--ink-raised: #1d2238; /* tarjetas sobre ink */
-	--paper: #f0ede6; /* hueso — papel sobre la mesa */
-	--paper-dim: #dcd8cd;
+	/* Superficie — coherente con Capture dark mode */
+	--ink: #14181d; /* fondo — mismo que Capture */
+	--ink-raised: #1c2128; /* tarjetas sobre ink — surface de Capture */
+	--paper: #f6f7f9; /* hueso — paper de Capture light */
+	--paper-dim: #dde1e6; /* line de Capture */
 
-	/* Estado del roadmap */
-	--seal: #ff5b49; /* coral sello — en producción (Capture, CTA) */
-	--seal-dim: #7a3229;
-	--brass: #d4942d; /* latón — avanzado, sin abrir (Custia), más apagado */
-	--brass-dim: #5f4919;
-	--slate: #6b7a9e; /* pizarra — planeado (OCR), más neutra */
-	--slate-dim: #33394a;
+	/* Estado del roadmap — semántico */
+	--seal: #1f5fd0; /* azul — accent de Capture (en producción, CTA) */
+	--seal-dim: #1a4ba8;
+	--brass: #9c6600; /* naranja neutral — avanzado, sin abrir (Custia) */
+	--brass-dim: #6b4a00;
+	--slate: #6b7684; /* gris — planeado (OCR), ink-soft de Capture */
+	--slate-dim: #3d4452;
 
-	/* Texto */
-	--text-hi: #f5f3ee;
-	--text-lo: #9aa0b8;
-	--text-on-paper: #23263a;
-	--text-on-paper-lo: #5b5f74;
+	/* Texto — ajustado a fondo más oscuro */
+	--text-hi: #e8ecf1; /* ink de Capture dark */
+	--text-lo: #9aa5b1; /* ink-soft de Capture dark */
+	--text-on-paper: #17202a; /* ink de Capture light */
+	--text-on-paper-lo: #5a6672; /* ink-soft de Capture light */
 
 	/* Tipografía */
 	--font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
