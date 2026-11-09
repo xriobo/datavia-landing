@@ -14,8 +14,26 @@
 	--ui-ok: #7fd9a8;
 	--ui-bad: #ff8a80;
 	--ui-shadow: 0 0 0 1px rgb(0 0 0 / .3), 0 24px 60px -28px rgb(0 0 0 / .65);
-	/* el botón tonal de la página, para que las maquetas no añadan un tercer estilo de botón */
-	--ui-ghost: color-mix(in oklab, var(--p-ink) 8%, var(--p-bg));
+	/* el contorno del botón secundario de la página (data-buttons="solid"), para que las maquetas no añadan un
+	   tercer estilo de botón */
+	--ui-outline: color-mix(in oklab, var(--p-ink) 20%, transparent);
+
+	/* El panel iluminado de cada producto, en tono medio: claro frente a la página (unos 4:1) sin deslumbrar.
+	   Un color por producto, como identidad y nunca como acción (la única acción es el salvia de --p-action). */
+	--lit: #6f7f76;          /* datavia */
+	--lit-capture: #66778c;  /* pizarra azul, la familia del azul de Capture */
+	--lit-cuentamos: #66998f;/* verde azulado, la familia de Cuentamos (3:1 sobre su tarjeta, cards.md) */
+	--lit-custia: #8a7a5c;   /* latón, el de Custia en la landing anterior */
+}
+#capture { --lit: var(--lit-capture); }
+#cuentamos { --lit: var(--lit-cuentamos); }
+#custia { --lit: var(--lit-custia); }
+/* Los paneles del kit (cards.css) y los marcos de esta página pintan con los tokens --ground-*: se derivan del
+   --lit de cada sección, y html[data-ground] gana a la regla de system.css por ir después */
+html[data-ground], #capture, #cuentamos, #custia {
+	--ground-bg: var(--lit);
+	--ground-surface: color-mix(in oklab, var(--lit) 70%, white);
+	--ground-accent: color-mix(in oklab, var(--lit) 82%, black);
 }
 
 /* El enlace de salto: primer hijo del .wrap del menú, invisible hasta recibir el foco */
@@ -37,14 +55,16 @@
 .hero__proof strong { font-weight: 500; color: var(--ink); }
 .status { font-size: var(--t-small); color: var(--muted); }
 
-/* El fondo iluminado (sage) con una luz suave, en la portada y en cada visual */
-.hero__art, .lit {
+/* El fondo iluminado del producto de cada sección, con una luz suave arriba y una sombra abajo */
+.hero__art, .frame.lit {
 	background:
-		radial-gradient(70% 60% at 18% 12%, color-mix(in oklab, var(--ground-surface) 80%, white), transparent 70%),
-		radial-gradient(60% 50% at 90% 100%, color-mix(in oklab, var(--ground-bg) 80%, var(--ground-accent)), transparent 70%),
+		radial-gradient(70% 60% at 18% 12%, var(--ground-surface), transparent 70%),
+		radial-gradient(60% 50% at 90% 100%, var(--ground-accent), transparent 70%),
 		var(--ground-bg);
 	border-color: transparent;
 }
+/* En escritorio cada pantalla queda centrada en su panel; en móvil y tableta sigue arriba para no cortarse */
+@media (min-width: 1024px) { .frame > :is(.phone, .chain) { align-self: center; margin-top: 0; } }
 
 /* ---------- ventana y tarjeta */
 .d-win { background: var(--ui-bg); color: var(--ui-ink); border-radius: 12px; overflow: hidden; font: 400 14px/1.4 var(--font-text); text-align: left; box-shadow: var(--ui-shadow); }
@@ -80,7 +100,7 @@
 /* ---------- Capture: documentos y campos leídos (los documentos siguen siendo papel y plástico: claros) */
 .cap-docs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .cap-doc { display: grid; gap: 6px; font-size: 13px; color: var(--ui-muted); }
-.idcard { display: block; aspect-ratio: 85.6 / 54; border-radius: 6px; border: 1px solid var(--ui-line);
+.idcard { display: block; aspect-ratio: 85.6 / 54; border-radius: 6px; border: 1px solid var(--ui-line); filter: brightness(.84);
 	background:
 		linear-gradient(#b9c4cf, #b9c4cf) 10% 22% / 26% 52% no-repeat,
 		linear-gradient(#d4dbe2, #d4dbe2) 88% 26% / 44% 7% no-repeat,
@@ -123,7 +143,7 @@
 .cap-docs--phone { gap: 8px; }
 .phone__actions { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; margin-top: 16px; }
 .ph-btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 14px; border-radius: 10px; background: var(--p-action); color: var(--p-action-ink); font: 500 14px/1 var(--font-text); white-space: nowrap; border: 0; }
-.ph-btn--ghost { background: var(--ui-ghost); color: var(--p-ink); }
+.ph-btn--ghost { background: transparent; color: var(--p-ink); box-shadow: inset 0 0 0 1px var(--ui-outline); }
 
 /* ---------- fragmentos de las tarjetas (Cuentamos y las reglas) */
 .cards-3 { --p-h: 240px; }
