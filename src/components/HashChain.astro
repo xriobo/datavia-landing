@@ -1,0 +1,119 @@
+---
+// Cadena de huellas real: SHA-256 con crypto.subtle en el navegador, el mismo
+// encadenado que billing_record en Custia, no una animación.
+---
+
+<div class="d-win chain ui ui-mock" data-hash-demo>
+	<div class="d-win__bar"><span class="d-win__dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Custia · Registro de facturación</span></div>
+	<div class="chain__body">
+		<table class="chain__table">
+			<thead>
+				<tr>
+					<th scope="col">Factura</th>
+					<th scope="col">Importe</th>
+					<th scope="col" class="chain__prev">Huella anterior</th>
+					<th scope="col">Huella</th>
+				</tr>
+			</thead>
+			<tbody data-hash-body>
+				<tr><td>F-2027-00001</td><td>412,00 €</td><td class="chain__prev">génesis</td><td>…</td></tr>
+				<tr><td>F-2027-00002</td><td>187,50 €</td><td class="chain__prev">…</td><td>…</td></tr>
+				<tr><td>F-2027-00003</td><td>2340,00 €</td><td class="chain__prev">…</td><td>…</td></tr>
+			</tbody>
+		</table>
+		<p class="chain__status" data-status role="status" aria-live="polite">Calculando las huellas SHA-256…</p>
+		<button type="button" class="btn btn--secondary chain__toggle" data-action="tamper">Alterar el importe de la factura 2</button>
+	</div>
+</div>
+
+<script>
+	type Invoice = { number: string; amount: number };
+
+	const GENESIS = '0'.repeat(64);
+	const invoices: Invoice[] = [
+		{ number: 'F-2027-00001', amount: 412 },
+		{ number: 'F-2027-00002', amount: 187.5 },
+		{ number: 'F-2027-00003', amount: 2340 },
+	];
+	const ALTERED = 800;
+
+	async function sha256(input: string): Promise<string> {
+		const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
+		return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+	}
+
+	const fold = (hash: string) => `${hash.slice(0, 6)}…${hash.slice(-4)}`;
+	const euros = (value: number) => `${value.toFixed(2).replace('.', ',')} €`;
+	const link = (previous: string, invoice: Invoice, amount: number) =>
+		sha256(`${previous}|${invoice.number}|${amount.toFixed(2)}`);
+
+	async function mount(root: HTMLElement) {
+		const body = root.querySelector<HTMLElement>('[data-hash-body]');
+		const status = root.querySelector<HTMLElement>('[data-status]');
+		const toggle = root.querySelector<HTMLButtonElement>('[data-action="tamper"]');
+		if (!body || !status || !toggle) return;
+
+		// crypto.subtle solo existe en contexto seguro (https o localhost) y en navegadores actuales.
+		if (!globalThis.crypto?.subtle) {
+			status.textContent = 'Esta demostración calcula las huellas en tu navegador: ábrela con https en un navegador actualizado.';
+			toggle.hidden = true;
+			return;
+		}
+
+		// Lo grabado: se calcula una vez y ya no cambia, como lo que está en la base de datos.
+		const stored: string[] = [];
+		for (const [i, invoice] of invoices.entries()) {
+			stored.push(await link(i === 0 ? GENESIS : stored[i - 1], invoice, invoice.amount));
+		}
+
+		let tampered = false;
+
+		async function render() {
+			const rows = await Promise.all(
+				invoices.map(async (invoice, i) => {
+					const previous = i === 0 ? GENESIS : stored[i - 1];
+					const amount = tampered && i === 1 ? ALTERED : invoice.amount;
+					const hash = await link(previous, invoice, amount);
+					return { invoice, amount, previous, hash, broken: hash !== stored[i], i };
+				}),
+			);
+
+			body.replaceChildren(
+				...rows.map(({ invoice, amount, previous, hash, broken, i }) => {
+					const tr = document.createElement('tr');
+					tr.classList.toggle('is-broken', broken);
+					const cells: [string, string?, string?][] = [
+						[invoice.number],
+						[euros(amount)],
+						[i === 0 ? 'génesis' : fold(previous), previous, 'chain__prev'],
+						[fold(hash), hash],
+					];
+					for (const [text, title, className] of cells) {
+						const td = document.createElement('td');
+						td.textContent = text;
+						if (title) td.title = title;
+						if (className) td.className = className;
+						tr.append(td);
+					}
+					return tr;
+				}),
+			);
+
+			const broken = rows.find((r) => r.broken);
+			status.classList.toggle('is-broken', Boolean(broken));
+			status.textContent = broken
+				? `La huella de la factura ${broken.i + 1} ya no coincide: el cambio se detecta solo.`
+				: 'Las tres huellas coinciden: la cadena está íntegra.';
+			toggle.textContent = tampered ? 'Restaurar el importe original' : 'Alterar el importe de la factura 2';
+		}
+
+		toggle.addEventListener('click', () => {
+			tampered = !tampered;
+			void render();
+		});
+
+		await render();
+	}
+
+	for (const root of document.querySelectorAll<HTMLElement>('[data-hash-demo]')) void mount(root);
+</script>
