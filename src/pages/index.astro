@@ -35,6 +35,10 @@ const mainAction = 'Escribir a datavia';
 				<div class="nav__item"><a class="nav__link" href="#reglas">Reglas</a></div>
 			</nav>
 			<div class="nav__actions">
+				<button class="btn btn--secondary theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a tema claro">
+					<svg class="theme-toggle__sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5"></circle><path d="M10 1.5v2.5M10 16v2.5M1.5 10H4M16 10h2.5M4 4l1.8 1.8M14.2 14.2 16 16M4 16l1.8-1.8M14.2 5.8 16 4"></path></svg>
+					<svg class="theme-toggle__moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.2A7 7 0 0 1 7.8 3.5a7 7 0 1 0 8.7 8.7z"></path></svg>
+				</button>
 				<a class="btn btn--primary" href={contact}>{mainAction}</a>
 			</div>
 			<button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menú">
@@ -306,8 +310,41 @@ const mainAction = 'Escribir a datavia';
 				</div>
 				<div class="footer__legal">
 					<span>&copy; {new Date().getFullYear()} datavia</span>
+					<button class="theme-link" type="button" data-theme-toggle data-theme-label>Tema claro</button>
 				</div>
 			</div>
 		</div>
 	</footer>
+
+	<script>
+		// El tema lo elige un clic y se recuerda en este dispositivo; el script del <head> lo aplica antes de pintar.
+		const root = document.documentElement;
+		const toggles = document.querySelectorAll<HTMLElement>('[data-theme-toggle]');
+		const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+
+		function sync() {
+			const target = root.dataset.theme === 'light' ? 'oscuro' : 'claro';
+			for (const el of toggles) {
+				el.setAttribute('aria-label', `Cambiar a tema ${target}`);
+				if (el.hasAttribute('data-theme-label')) el.textContent = `Tema ${target}`;
+			}
+			themeColor?.setAttribute('content', getComputedStyle(root).getPropertyValue('--p-bg').trim());
+		}
+
+		for (const el of toggles) {
+			el.addEventListener('click', () => {
+				const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+				root.dataset.theme = next;
+				root.dataset.tone = next;
+				try {
+					localStorage.setItem('datavia-theme', next);
+				} catch {
+					// Sin almacenamiento (modo privado) el tema dura lo que la visita.
+				}
+				sync();
+			});
+		}
+
+		sync();
+	</script>
 </Layout>

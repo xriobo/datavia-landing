@@ -15,12 +15,21 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<!-- taste: type software; data-ground sage = el fondo iluminado tras las interfaces. data-tone="dark" desde el
-     primer pintado (system.js lo pondría al cargar): así el pie y las bandas nunca destellan en claro. -->
-<html lang="es" data-type="software" data-radius="soft" data-ground="sage" data-buttons="solid" data-tone="dark" data-motion>
+<!-- taste: type software; data-ground sage = el fondo iluminado tras las interfaces. data-theme y data-tone
+     los fija el script de abajo antes del primer pintado: oscuro por defecto, claro si el visitante lo eligió. -->
+<html lang="es" data-type="software" data-radius="soft" data-ground="sage" data-buttons="solid" data-theme="dark" data-tone="dark" data-motion>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<script is:inline>
+			// Antes de pintar nada, para que no destelle el tema contrario. localStorage puede fallar (modo privado).
+			(() => {
+				let theme = 'dark';
+				try { if (localStorage.getItem('datavia-theme') === 'light') theme = 'light'; } catch {}
+				document.documentElement.dataset.theme = theme;
+				document.documentElement.dataset.tone = theme;
+			})();
+		</script>
 		<meta name="site-kind" content="software" />
 		<meta name="page-type" content="software" />
 		<title>{title}</title>
@@ -28,7 +37,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 		<link rel="canonical" href={canonicalUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="theme-color" content="#161c1a" />
-		<meta name="color-scheme" content="dark" />
+		<meta name="color-scheme" content="dark light" />
 
 		<meta property="og:type" content="website" />
 		<meta property="og:locale" content="es_ES" />
@@ -61,6 +70,15 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 				--display-tracking-xl: -0.036em;
 				--display-stretch: 96%;
 				--ly-scale: 1.04;
+				color-scheme: dark;
+			}
+			/* El tema claro: la paleta cool-white-slate que repartió taste para la primera versión */
+			:root[data-theme="light"] {
+				--p-bg: #f7f9fa; --p-surface: #ecf0f2; --p-ink: #1f3038; --p-muted: #5d6b72;
+				--p-accent: #0d7480; --p-accent-ink: #ffffff; --p-action: #0d7480; --p-action-ink: #ffffff;
+				--p-inv-bg: #1f3038; --p-inv-surface: #2c3c44; --p-inv-ink: #f7f9fa; --p-inv-muted: #9ea7ab;
+				--p-inv-accent: #f7f9fa; --p-inv-accent-ink: #1f3038; --p-inv-action: #f7f9fa; --p-inv-action-ink: #1f3038;
+				color-scheme: light;
 			}
 		</style>
 		<script is:inline src="/kit/backgrounds/backgrounds.js"></script>
