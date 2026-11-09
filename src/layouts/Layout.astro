@@ -15,8 +15,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<!-- taste: type software; data-ground sky = el fondo iluminado tras las interfaces -->
-<html lang="es" data-type="software" data-radius="soft" data-ground="sky" data-buttons="tonal" data-motion>
+<!-- taste: type software; data-ground sage = el fondo iluminado tras las interfaces. data-tone="dark" desde el
+     primer pintado (system.js lo pondría al cargar): así el pie y las bandas nunca destellan en claro. -->
+<html lang="es" data-type="software" data-radius="soft" data-ground="sage" data-buttons="tonal" data-tone="dark" data-motion>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -26,7 +27,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="theme-color" content="#f7f9fa" />
+		<meta name="theme-color" content="#161c1a" />
+		<meta name="color-scheme" content="dark" />
 
 		<meta property="og:type" content="website" />
 		<meta property="og:locale" content="es_ES" />
@@ -47,10 +49,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 		<link rel="stylesheet" href="/kit/layout/layout.css" />
 		<style is:inline>
 			:root {
-				--p-bg: #f7f9fa; --p-surface: #ecf0f2; --p-ink: #1f3038; --p-muted: #5d6b72;
-				--p-accent: #0d7480; --p-accent-ink: #ffffff; --p-action: #0d7480; --p-action-ink: #ffffff;
-				--p-inv-bg: #1f3038; --p-inv-surface: #2c3c44; --p-inv-ink: #f7f9fa; --p-inv-muted: #9ea7ab;
-				--p-inv-accent: #f7f9fa; --p-inv-accent-ink: #1f3038; --p-inv-action: #f7f9fa; --p-inv-action-ink: #1f3038;
+				--p-bg: #161c1a; --p-surface: #1f2725; --p-ink: #e3e2da; --p-muted: #8e948d;
+				--p-accent: #9fc7b8; --p-accent-ink: #161c1a; --p-action: #9fc7b8; --p-action-ink: #161c1a;
+				--p-inv-bg: #e3e2da; --p-inv-surface: #d3d2cb; --p-inv-ink: #161c1a; --p-inv-muted: #555a55;
+				--p-inv-accent: #161c1a; --p-inv-accent-ink: #e3e2da; --p-inv-action: #161c1a; --p-inv-action-ink: #e3e2da;
 				--font-display: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
 				--font-text: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
 				--font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;

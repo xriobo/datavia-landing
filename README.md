@@ -14,6 +14,10 @@ Diseño y decisiones: [`docs/superpowers/specs/2026-11-09-landing-multiproducto-
 Astro sin frameworks de UI. El sistema visual es el kit de taste-skill (MIT), copiado solo en lo que la página usa
 en `public/kit/`. Fuentes autoalojadas (`@fontsource*`): nada se pide a Google Fonts.
 
+Tema oscuro en toda la web: paleta `green-black-bone` del kit (los tokens `--p-*` en `Layout.astro`) y
+`data-tone="dark"` en `<html>`. Las pantallas de producto usan su modo oscuro (`--ui-*` en `page.css`) sobre los
+paneles iluminados (`data-ground="sage"`).
+
 ## Comandos
 
 ```powershell
