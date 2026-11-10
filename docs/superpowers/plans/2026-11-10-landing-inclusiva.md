@@ -85,6 +85,10 @@ convicción y por adelantarse a 2029, no por una sanción inmediata.
 
 ### Task 2: Secciones que crecen con el texto (zoom, reflow y espaciado)
 
+> Hecho en parte el 2026-11-10 (72d1dd0): por debajo de 640 px las secciones ya usan alto mínimo, tras ver la ventana
+> de Capture bajo el titular de Capture en un móvil de 375 × 667. Falta lo mismo de 1024 px en adelante, que es donde
+> cae el zoom al 200 % en un portátil, con cuidado de no romper la portada (su imagen mide el 100 % del alto).
+
 **Files:**
 - Modify: `src/styles/page.css`
 - Create: `scripts/a11y-overlap-check.js` (fragmento que se ejecuta en el navegador)
