@@ -68,6 +68,19 @@ html[data-ground], #capture, #cuentamos, #custia {
 #cuentamos, #reglas { --hm: 2; }
 @media (min-width: 640px) and (max-width: 1279px) { #cuentamos, #reglas { --h: 2; } }
 
+/* En el móvil cada sección crece con su contenido en vez de pisar la siguiente. El kit fija el alto a la pantalla, y
+   en teléfonos estrechos o bajos (375 × 667, 360 × 640) el texto ocupa más y lo que no cabe se sale por encima de la
+   sección siguiente (la ventana de Capture bajo el titular de Capture). Es la regla que el kit ya usa de 640 a 1279:
+   alto mínimo y flex por dentro; cuando el contenido cabe, la altura es la de siempre. Los selectores repiten los del
+   kit para ganarle por orden. */
+@media (max-width: 639px) {
+	main > :is(section, .section), footer.closing { display: flex; flex-direction: column; height: auto; }
+	main > :is(section, .section).hero { min-height: 100svh; }
+	main > :is(section, .section):not(.hero, .section--hero), footer.closing { height: auto; min-height: calc(var(--hm, var(--h, 1)) * 100lvh); }
+	main > :is(section, .section) > :is(.wrap, .container), footer.closing > .wrap { flex: 1 0 auto; height: auto; }
+	.hero > .wrap > .hero-text { flex: 1 0 auto; height: auto; }
+}
+
 /* El pie: sin filas a medias en tableta */
 @media (max-width: 1023px) { .footer .closing__links .grid > .span-6 { grid-column: 1 / -1; } }
 @media (min-width: 640px) and (max-width: 1023px) { .footer .footer__col { grid-column: auto / span 6; } }
