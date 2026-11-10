@@ -88,7 +88,42 @@ html[data-ground], #capture, #cuentamos, #custia {
 
 .hero__proof { margin-top: var(--s-6); font-size: var(--t-small); color: var(--muted); }
 .hero__proof strong { font-weight: 500; color: var(--ink); }
-.status { font-size: var(--t-small); color: var(--muted); }
+/* Para quién es y en qué estado está: información que se lee, así que en la tinta del texto (7:1) y a 16 px.
+   p.status gana a .section-head p del kit, que la pondría al tamaño de la entradilla. */
+p.status { font-size: var(--t-body); color: var(--ink); }
+.status b { font-weight: 500; color: var(--ink); }
+
+/* El índice de los tres productos, al pie de la columna de texto de la portada (el hueco de .hero-facts del
+   kit, alineado con el pie de la imagen): que se vea desde el primer vistazo que son tres productos */
+@media (min-width: 1024px) {
+	.hero--collage .hero__text { align-self: stretch; display: flex; flex-direction: column; }
+	.hero--collage .hero__text > .products { margin-top: auto; }
+}
+.products { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.product { display: grid; gap: var(--s-2); align-content: start; justify-items: start; text-decoration: none; color: var(--ink); }
+.product img { width: 40px; height: 40px; border-radius: 10px; }
+.product__name { font-weight: 500; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: text-decoration-color var(--dur) var(--ease); }
+.product:hover .product__name { text-decoration-color: currentColor; }
+.product__for { font-size: var(--t-small); color: var(--muted); }
+/* 1024-1279: la portada va justa de alto; en el móvil, solo icono y nombre */
+@media (min-width: 1024px) and (max-width: 1279px), (max-width: 639px) { .product__for { display: none; } }
+@media (max-width: 639px) { .products { margin-top: var(--s-5); } .product img { width: 32px; height: 32px; border-radius: 8px; } }
+
+/* La marca de cada producto sobre su titular, como en la ficha de una app; en el móvil, en línea con el nombre.
+   Es decorativa (el nombre va al lado), así que se pinta con CSS y no entra en el árbol de accesibilidad. */
+#capture { --mark: url("/marks/capture.png"); }
+#cuentamos { --mark: url("/marks/cuentamos.svg"); }
+#custia { --mark: url("/marks/custia.svg"); }
+:is(#capture, #cuentamos, #custia) h2::before {
+	content: ""; display: block; width: 48px; height: 48px; margin-bottom: var(--s-4);
+	border-radius: 12px; background: var(--mark) center / cover no-repeat;
+}
+/* En escritorio la imagen de Capture y de Custia baja lo que ocupa la marca: el titular y la imagen quedan alineados
+   arriba y la marca asoma encima, como una etiqueta */
+@media (min-width: 1024px) { :is(#capture, #custia) .grid > .frame { margin-top: calc(48px + var(--s-4)); } }
+/* En el móvil no cabe sin mover el titular de la línea izquierda: ahí distinguen el nombre, el color del panel y la
+   línea de audiencia, y los iconos están en el índice de la portada */
+@media (max-width: 639px) { :is(#capture, #cuentamos, #custia) h2::before { display: none; } }
 
 /* El fondo iluminado del producto de cada sección, con una luz suave arriba y una sombra abajo */
 .hero__art, .frame.lit {
@@ -181,8 +216,10 @@ html[data-ground], #capture, #cuentamos, #custia {
 .ph-btn--ghost { background: transparent; color: var(--p-ink); box-shadow: inset 0 0 0 1px var(--ui-outline); }
 
 /* ---------- fragmentos de las tarjetas (Cuentamos y las reglas) */
-.cards-3 { --p-h: 240px; }
-@media (max-width: 639px) { .cards-3 { --p-h: 200px; } }
+/* Mínimo del panel: 200 (el kit pone 264-340 en el propio .panel, por eso el selector va sobre él). La marca del
+   producto sobre el titular resta alto a la pantalla de Cuentamos; el panel crece igual hasta el pie de la sección
+   (.fill), así que solo cambia cuando no hay sitio */
+.cards-3 .panel { --p-h: 200px; }
 /* De 1024 a 1279 el kit pone dos tarjetas por fila y deja la tercera sola: aquí, una por fila con el texto
    al lado de su panel (como la demo collage del kit). Los id ganan a la regla del kit, de 10 clases. */
 @media (min-width: 1024px) and (max-width: 1279px) {

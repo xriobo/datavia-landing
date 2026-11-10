@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+	<!-- Marca provisional de Custia (un eslabón: la cadena de huellas) hasta que tenga logotipo propio -->
+	<rect width="100" height="100" rx="22" fill="#8a5a00"/>
+	<g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M45 57 37 65a12 12 0 0 1-17-17l12-12a12 12 0 0 1 17 0"/>
+		<path d="M55 43 63 35a12 12 0 0 1 17 17L68 64a12 12 0 0 1-17 0"/>
+		<path d="M42 58 58 42"/>
+	</g>
+</svg>

@@ -10,6 +10,14 @@ const cuentamos = {
 	launched: false,
 };
 
+// Los tres productos: el índice de la portada y la cabecera de cada sección salen de aquí
+const products = [
+	{ id: 'capture', name: 'Capture', mark: '/marks/capture.png', audience: 'Para asesorías y sus empresas' },
+	{ id: 'cuentamos', name: cuentamos.name, mark: '/marks/cuentamos.svg', audience: 'Para familias y amigos' },
+	{ id: 'custia', name: 'Custia', mark: '/marks/custia.svg', audience: 'Para autónomos y pymes' },
+] as const;
+const [capture, cuentamosProduct, custia] = products;
+
 const email = 'hola@datavia.app';
 const mailto = (subject: string) => `mailto:${email}?subject=${encodeURIComponent(subject)}`;
 const contact = mailto('Contacto desde datavia.app');
@@ -59,13 +67,23 @@ const mainAction = 'Escribir a datavia';
 						</p>
 						<div class="btn-row">
 							<a class="btn btn--primary" href={contact}>{mainAction}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"></path><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></a>
-							<a class="btn btn--secondary" href="#capture">Ver las aplicaciones</a>
 						</div>
 						<p class="hero__proof">
 							{cuentamos.launched
 								? <>Nuevo: <strong>{cuentamos.name}</strong>, gratis y sin crear cuenta</>
 								: <>{cuentamos.name} abre el <strong>15 de noviembre de 2026</strong></>}
 						</p>
+						<ul class="products" aria-label="Las tres aplicaciones de datavia">
+							{products.map((p) => (
+								<li>
+									<a class="product" href={`#${p.id}`}>
+										<img src={p.mark} alt="" width="40" height="40" />
+										<span class="product__name">{p.name}</span>
+										<span class="product__for">{p.audience}</span>
+									</a>
+								</li>
+							))}
+						</ul>
 					</div>
 
 					<div class="hero__art span-6 start-7">
@@ -118,7 +136,7 @@ const mainAction = 'Escribir a datavia';
 						<div class="btn-row">
 							<a class="btn btn--secondary" href={mailto('Demo de Capture')}>Pedir una demo de Capture</a>
 						</div>
-						<p class="status">En producción con su primera asesoría.</p>
+						<p class="status"><b>{capture.audience}</b> · En producción con su primera asesoría.</p>
 					</div>
 					<div class="frame frame--fill lit span-6 start-7" role="img" aria-label="Capture en el móvil con el alta lista para enviar">
 						<div class="phone ui ui-mock" aria-hidden="true">
@@ -149,7 +167,10 @@ const mainAction = 'Escribir a datavia';
 					<h2 id="cuentamos-h">{cuentamos.name}. <span class="muted">Regalos, botes y gastos con tu gente.</span></h2>
 					<p>
 						Listas de deseos, botes para regalos en grupo, gastos del piso o del viaje y amigo invisible. Se
-						entra con un enlace, sin crear cuenta, y es gratis.{!cuentamos.launched && ' Abre el 15 de noviembre de 2026.'}
+						entra con un enlace, sin crear cuenta, y es gratis.
+					</p>
+					<p class="status">
+						<b>{cuentamosProduct.audience}</b> · {cuentamos.launched ? 'Ya está abierto' : 'Abre el 15 de noviembre de 2026'}
 					</p>
 					{cuentamos.launched && <div class="btn-row"><a class="btn btn--secondary" href={cuentamos.url}>Abrir {cuentamos.name}</a></div>}
 				</div>
@@ -214,7 +235,7 @@ const mainAction = 'Escribir a datavia';
 						<div class="btn-row">
 							<a class="btn btn--secondary" href={mailto('Aviso de Custia')}>Pedir aviso de Custia</a>
 						</div>
-						<p class="status">Motor terminado; el periodo de pruebas aún no está abierto.</p>
+						<p class="status"><b>{custia.audience}</b> · Motor terminado; el periodo de pruebas aún no está abierto.</p>
 					</div>
 					<div class="frame frame--fill lit span-6 start-7">
 						<HashChain />

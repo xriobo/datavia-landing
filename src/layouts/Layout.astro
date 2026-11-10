@@ -1,8 +1,8 @@
 ---
-// Fuentes autoalojadas: nada se pide a Google Fonts (ni la IP del visitante).
-import '@fontsource-variable/instrument-sans/wdth.css';
-import '@fontsource/dm-mono/400.css';
-import '@fontsource/dm-mono/500.css';
+// Fuentes autoalojadas: nada se pide a Google Fonts (ni la IP del visitante). Atkinson Hyperlegible, del Braille
+// Institute, distingue las letras que más se confunden con baja visión (I l 1, O 0, b d p q).
+import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
+import '@fontsource-variable/atkinson-hyperlegible-mono/wght.css';
 import '../styles/page.css';
 
 interface Props {
@@ -62,13 +62,14 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 				--p-accent: #9fc7b8; --p-accent-ink: #161c1a; --p-action: #9fc7b8; --p-action-ink: #161c1a;
 				--p-inv-bg: #e3e2da; --p-inv-surface: #d3d2cb; --p-inv-ink: #161c1a; --p-inv-muted: #555a55;
 				--p-inv-accent: #161c1a; --p-inv-accent-ink: #e3e2da; --p-inv-action: #161c1a; --p-inv-action-ink: #e3e2da;
-				--font-display: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
-				--font-text: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
-				--font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+				--font-display: "Atkinson Hyperlegible Next Variable", system-ui, sans-serif;
+				--font-text: "Atkinson Hyperlegible Next Variable", system-ui, sans-serif;
+				--font-mono: "Atkinson Hyperlegible Mono Variable", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 				--display-weight: 500;
-				--display-tracking: -0.028em;
-				--display-tracking-xl: -0.036em;
-				--display-stretch: 96%;
+				/* Atkinson se diseñó con letras bien separadas: apretarlas resta legibilidad */
+				--display-tracking: -0.01em;
+				--display-tracking-xl: -0.015em;
+				--display-stretch: 100%;
 				--ly-scale: 1.04;
 				color-scheme: dark;
 			}
