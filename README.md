@@ -14,7 +14,7 @@ Diseño y decisiones: [`docs/superpowers/specs/2026-11-09-landing-multiproducto-
 Astro sin frameworks de UI. El sistema visual es el kit de taste-skill (MIT), copiado solo en lo que la página usa
 en `public/kit/`. Fuentes autoalojadas (`@fontsource*`): nada se pide a Google Fonts.
 
-Dos temas, oscuro por defecto. Un clic en el sol o la luna del menú (o en «Tema claro / Tema oscuro» del pie) cambia
+Dos temas. Sin elección, sigue el tema del sistema (y cambia con él); sin preferencia o sin JavaScript, el claro, que es el que mejor se lee para la mayoría y para quien tiene astigmatismo. Un clic en el sol o la luna del menú (o en «Tema claro / Tema oscuro» del pie) cambia
 `<html data-theme>`, y la elección se guarda en `localStorage` (`datavia-theme`). Un script en el `<head>` la
 aplica antes del primer pintado. Paletas del kit en `Layout.astro`: `green-black-bone` (oscuro) y
 `cool-white-slate` (claro). Las pantallas de producto (`--ui-*`) y los paneles de cada producto (`--lit-*`) tienen

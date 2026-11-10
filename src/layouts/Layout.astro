@@ -16,16 +16,20 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
 <!doctype html>
 <!-- taste: type software; data-ground sage = el fondo iluminado tras las interfaces. data-theme y data-tone
-     los fija el script de abajo antes del primer pintado: oscuro por defecto, claro si el visitante lo eligió. -->
-<html lang="es" data-type="software" data-radius="soft" data-ground="sage" data-buttons="solid" data-theme="dark" data-tone="dark" data-motion>
+     los fija el script de abajo antes del primer pintado: la elección guardada, si no la del sistema, y si no
+     (o sin JavaScript) el claro, que es el que mejor se lee para la mayoría y para quien tiene astigmatismo. -->
+<html lang="es" data-type="software" data-radius="soft" data-ground="sage" data-buttons="solid" data-theme="light" data-tone="light" data-motion>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<script is:inline>
 			// Antes de pintar nada, para que no destelle el tema contrario. localStorage puede fallar (modo privado).
 			(() => {
-				let theme = 'dark';
-				try { if (localStorage.getItem('datavia-theme') === 'light') theme = 'light'; } catch {}
+				let stored = null;
+				try { stored = localStorage.getItem('datavia-theme'); } catch {}
+				const theme = stored === 'light' || stored === 'dark'
+					? stored
+					: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 				document.documentElement.dataset.theme = theme;
 				document.documentElement.dataset.tone = theme;
 			})();
