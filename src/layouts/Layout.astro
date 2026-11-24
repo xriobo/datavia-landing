@@ -1,6 +1,8 @@
 ---
 // Fuentes autoalojadas: nada se pide a Google Fonts (ni la IP del visitante). Atkinson Hyperlegible, del Braille
-// Institute, distingue las letras que más se confunden con baja visión (I l 1, O 0, b d p q).
+// Institute, distingue las letras que más se confunden con baja visión (I l 1, O 0, b d p q). Los titulares van en
+// Instrument Serif, la letra del logotipo de Grupea: la casa une el texto de Capture con el titular de Grupea.
+import '@fontsource/instrument-serif/400.css';
 import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
 import '@fontsource-variable/atkinson-hyperlegible-mono/wght.css';
 import '../styles/page.css';
@@ -40,7 +42,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="theme-color" content="#161c1a" />
+		<meta name="theme-color" content="#f7f5f0" />
 		<meta name="color-scheme" content="dark light" />
 
 		<meta property="og:type" content="website" />
@@ -62,27 +64,29 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 		<link rel="stylesheet" href="/kit/layout/layout.css" />
 		<style is:inline>
 			:root {
-				--p-bg: #161c1a; --p-surface: #1f2725; --p-ink: #e3e2da; --p-muted: #8e948d;
-				--p-accent: #9fc7b8; --p-accent-ink: #161c1a; --p-action: #9fc7b8; --p-action-ink: #161c1a;
-				--p-inv-bg: #e3e2da; --p-inv-surface: #d3d2cb; --p-inv-ink: #161c1a; --p-inv-muted: #555a55;
-				--p-inv-accent: #161c1a; --p-inv-accent-ink: #e3e2da; --p-inv-action: #161c1a; --p-inv-action-ink: #e3e2da;
-				--font-display: "Atkinson Hyperlegible Next Variable", system-ui, sans-serif;
+				/* Tinta cálida sobre negro neutro: la versión nocturna del papel marfil */
+				--p-bg: #131518; --p-surface: #1c1f24; --p-ink: #ece8e1; --p-muted: #a0a4ab;
+				--p-accent: #a9c1e6; --p-accent-ink: #131518; --p-action: #ece8e1; --p-action-ink: #131518;
+				--p-inv-bg: #ece8e1; --p-inv-surface: #ddd8cf; --p-inv-ink: #131518; --p-inv-muted: #54585e;
+				--p-inv-accent: #131518; --p-inv-accent-ink: #ece8e1; --p-inv-action: #131518; --p-inv-action-ink: #ece8e1;
+				--font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
 				--font-text: "Atkinson Hyperlegible Next Variable", system-ui, sans-serif;
 				--font-mono: "Atkinson Hyperlegible Mono Variable", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-				--display-weight: 500;
-				/* Atkinson se diseñó con letras bien separadas: apretarlas resta legibilidad */
-				--display-tracking: -0.01em;
-				--display-tracking-xl: -0.015em;
+				--display-weight: 400;
+				/* Instrument Serif ya es estrecha: apretarla más la empasta */
+				--display-tracking: -0.005em;
+				--display-tracking-xl: -0.01em;
 				--display-stretch: 100%;
 				--ly-scale: 1.04;
 				color-scheme: dark;
 			}
-			/* El tema claro: la paleta cool-white-slate que repartió taste para la primera versión */
+			/* El tema claro: papel marfil y tinta azul noche, sobrio para una asesoría y cálido como Grupea. La acción
+			   es la tinta: el color queda para la identidad de cada producto. */
 			:root[data-theme="light"] {
-				--p-bg: #f7f9fa; --p-surface: #ecf0f2; --p-ink: #1f3038; --p-muted: #5d6b72;
-				--p-accent: #0d7480; --p-accent-ink: #ffffff; --p-action: #0d7480; --p-action-ink: #ffffff;
-				--p-inv-bg: #1f3038; --p-inv-surface: #2c3c44; --p-inv-ink: #f7f9fa; --p-inv-muted: #9ea7ab;
-				--p-inv-accent: #f7f9fa; --p-inv-accent-ink: #1f3038; --p-inv-action: #f7f9fa; --p-inv-action-ink: #1f3038;
+				--p-bg: #f7f5f0; --p-surface: #eeeae2; --p-ink: #1c232c; --p-muted: #575d66;
+				--p-accent: #24456e; --p-accent-ink: #ffffff; --p-action: #1c232c; --p-action-ink: #f7f5f0;
+				--p-inv-bg: #1c232c; --p-inv-surface: #262e38; --p-inv-ink: #f7f5f0; --p-inv-muted: #a6abb3;
+				--p-inv-accent: #f7f5f0; --p-inv-accent-ink: #1c232c; --p-inv-action: #f7f5f0; --p-inv-action-ink: #1c232c;
 				color-scheme: light;
 			}
 		</style>

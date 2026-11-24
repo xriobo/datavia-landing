@@ -1,22 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HashChain from '../components/HashChain.astro';
 
-// Lo único que cambia de una semana a otra. El 15-nov: launched = true.
-// Plan B (sale el amigo invisible de main): name «Amigo invisible», url https://secret-santa.datavia.app/.
-const cuentamos = {
-	name: 'Cuentamos',
-	url: 'https://cuentamos.datavia.app/',
-	launched: false,
-};
+const grupea = { name: 'Grupea', url: 'https://grupea.datavia.app/' };
 
-// Los tres productos: el índice de la portada y la cabecera de cada sección salen de aquí
+// Los dos productos: el índice de la portada y la cabecera de cada sección salen de aquí
 const products = [
 	{ id: 'capture', name: 'Capture', mark: '/marks/capture.png', audience: 'Para asesorías y sus empresas' },
-	{ id: 'cuentamos', name: cuentamos.name, mark: '/marks/cuentamos.svg', audience: 'Para familias y amigos' },
-	{ id: 'custia', name: 'Custia', mark: '/marks/custia.svg', audience: 'Para autónomos y pymes' },
+	{ id: 'grupea', name: grupea.name, mark: '/marks/grupea.svg', audience: 'Para familias y amigos' },
 ] as const;
-const [capture, cuentamosProduct, custia] = products;
+const [capture, grupeaProduct] = products;
 
 const email = 'hola@datavia.app';
 const mailto = (subject: string) => `mailto:${email}?subject=${encodeURIComponent(subject)}`;
@@ -26,7 +18,7 @@ const mainAction = 'Escribir a datavia';
 
 <Layout
 	title="datavia: software para asesorías, empresas y familias"
-	description="Capture recoge facturas y altas desde el móvil, Custia prepara la facturación VERI*FACTU y Cuentamos organiza regalos y gastos con tu gente."
+	description="Capture recoge facturas y altas desde el móvil y las lleva a la oficina de la asesoría. Grupea organiza regalos, botes y gastos con tu gente."
 >
 	<!-- type: software
 	     deal: hero collage, nav nav-centre (nav-cards dealt; no photographs), close close-type, footer footer-dark,
@@ -38,8 +30,7 @@ const mainAction = 'Escribir a datavia';
 			<a class="nav__logo" href="#top">datavia</a>
 			<nav class="nav__links" aria-label="Principal">
 				<div class="nav__item"><a class="nav__link" href="#capture">Capture</a></div>
-				<div class="nav__item"><a class="nav__link" href="#cuentamos">{cuentamos.name}</a></div>
-				<div class="nav__item"><a class="nav__link" href="#custia">Custia</a></div>
+				<div class="nav__item"><a class="nav__link" href="#grupea">{grupea.name}</a></div>
 				<div class="nav__item"><a class="nav__link" href="#reglas">Reglas</a></div>
 			</nav>
 			<div class="nav__actions">
@@ -62,18 +53,14 @@ const mainAction = 'Escribir a datavia';
 					<div class="hero__text span-6">
 						<h1 id="hero-h">Software para asesorías, empresas y familias</h1>
 						<p class="hero__lead">
-							Capture recoge facturas y altas desde el móvil, Custia prepara la facturación VERI*FACTU
-							y {cuentamos.name} organiza regalos y gastos con tu gente.
+							Capture recoge facturas y altas desde el móvil y las lleva a la oficina de la asesoría. {grupea.name}{' '}
+							organiza regalos, botes y gastos con tu gente.
 						</p>
 						<div class="btn-row">
 							<a class="btn btn--primary" href={contact}>{mainAction}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"></path><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></a>
 						</div>
-						<p class="hero__proof">
-							{cuentamos.launched
-								? <>Nuevo: <strong>{cuentamos.name}</strong>, gratis y sin crear cuenta</>
-								: <>{cuentamos.name} abre el <strong>15 de noviembre de 2026</strong></>}
-						</p>
-						<ul class="products" aria-label="Las tres aplicaciones de datavia">
+						<p class="hero__proof">Nuevo: <strong>{grupea.name}</strong>, gratis, sin crear cuenta y para grupos de hasta 200 personas</p>
+						<ul class="products" aria-label="Las aplicaciones de datavia">
 							{products.map((p) => (
 								<li>
 									<a class="product" href={`#${p.id}`}>
@@ -113,7 +100,7 @@ const mainAction = 'Escribir a datavia';
 								</div>
 							</div>
 						</div>
-						<div class="ly-piece ly-piece--note d-card" role="img" aria-label={`${cuentamos.name}: un bote para un regalo, pagado entre ocho personas`} data-ly-steps="700">
+						<div class="ly-piece ly-piece--note d-card" role="img" aria-label={`${grupea.name}: un bote para un regalo, pagado entre ocho personas`} data-ly-steps="700">
 							<div class="d-card__row"><h5>Bote · bici para Leo</h5><span class="d-chip" data-step data-step-at="4">Comprado</span></div>
 							<div class="d-note__line" data-step><i>✓</i><span><b>8 personas</b> se apuntan</span></div>
 							<div class="d-note__line" data-step><i>✓</i><span><b>8 de 8</b> han pagado su parte</span></div>
@@ -128,15 +115,16 @@ const mainAction = 'Escribir a datavia';
 			<div class="wrap">
 				<div class="grid grid--top fill">
 					<div class="span-6 split-col">
-						<h2 id="capture-h">Capture. <span class="muted">Facturas y altas de trabajadores desde el móvil.</span></h2>
+						<h2 id="capture-h">Capture. <span class="muted">Del móvil de la empresa a la oficina de la asesoría.</span></h2>
 						<p class="t-lead">
 							Las empresas de una asesoría mandan facturas, altas y bajas con una foto. Capture lee el DNI y
 							la tarjeta sanitaria, valida el NIF y lo entrega al correo o al programa de la asesoría.
+							Capture Office, su oficina, ordenará lo recibido por cliente y urgencia y las horas de cada uno.
 						</p>
 						<div class="btn-row">
 							<a class="btn btn--secondary" href={mailto('Demo de Capture')}>Pedir una demo de Capture</a>
 						</div>
-						<p class="status"><b>{capture.audience}</b> · En producción con su primera asesoría.</p>
+						<p class="status"><b>{capture.audience}</b> · En producción con su primera asesoría; Office, en preparación con ella.</p>
 					</div>
 					<div class="frame frame--fill lit span-6 start-7" role="img" aria-label="Capture en el móvil con el alta lista para enviar">
 						<div class="phone ui ui-mock" aria-hidden="true">
@@ -161,18 +149,16 @@ const mainAction = 'Escribir a datavia';
 			</div>
 		</section>
 
-		<section class="section" id="cuentamos" aria-labelledby="cuentamos-h">
+		<section class="section" id="grupea" aria-labelledby="grupea-h">
 			<div class="wrap">
 				<div class="section-head">
-					<h2 id="cuentamos-h">{cuentamos.name}. <span class="muted">Regalos, botes y gastos con tu gente.</span></h2>
+					<h2 id="grupea-h">{grupea.name}. <span class="muted">Regalos, botes y gastos con tu gente.</span></h2>
 					<p>
 						Listas de deseos, botes para regalos en grupo, gastos del piso o del viaje y amigo invisible. Se
 						entra con un enlace, sin crear cuenta, y es gratis.
 					</p>
-					<p class="status">
-						<b>{cuentamosProduct.audience}</b> · {cuentamos.launched ? 'Ya está abierto' : 'Abre el 15 de noviembre de 2026'}
-					</p>
-					{cuentamos.launched && <div class="btn-row"><a class="btn btn--secondary" href={cuentamos.url}>Abrir {cuentamos.name}</a></div>}
+					<p class="status"><b>{grupeaProduct.audience}</b> · Abierta y gratis.</p>
+					<div class="btn-row"><a class="btn btn--secondary" href={grupea.url}>Abrir {grupea.name}</a></div>
 				</div>
 				<div class="grid cards-3 fill">
 					<article class="card m-nolift span-4">
@@ -223,27 +209,6 @@ const mainAction = 'Escribir a datavia';
 			</div>
 		</section>
 
-		<section class="section ground-surface" id="custia" aria-labelledby="custia-h">
-			<div class="wrap">
-				<div class="grid grid--top fill">
-					<div class="span-6 split-col">
-						<h2 id="custia-h">Custia. <span class="muted">Facturación VERI*FACTU con huella encadenada.</span></h2>
-						<p class="t-lead">
-							Cada factura guarda la huella SHA-256 de la anterior, contrastada con los vectores de la AEAT.
-							Obligatorio desde el 1 de enero de 2027 en sociedades y el 1 de julio en autónomos.
-						</p>
-						<div class="btn-row">
-							<a class="btn btn--secondary" href={mailto('Aviso de Custia')}>Pedir aviso de Custia</a>
-						</div>
-						<p class="status"><b>{custia.audience}</b> · Motor terminado; el periodo de pruebas aún no está abierto.</p>
-					</div>
-					<div class="frame frame--fill lit span-6 start-7">
-						<HashChain />
-					</div>
-				</div>
-			</div>
-		</section>
-
 		<section class="section ground-surface" id="reglas" aria-labelledby="reglas-h">
 			<div class="wrap">
 				<div class="section-head">
@@ -253,7 +218,7 @@ const mainAction = 'Escribir a datavia';
 				<div class="grid cards-3 fill">
 					<article class="card m-nolift span-4">
 						<h3>Comprueba antes de guardar</h3>
-						<p>Capture valida el NIF, {cuentamos.name} verifica el sorteo y Custia cada huella.</p>
+						<p>Capture valida el NIF y {grupea.name} comprueba que nadie se toque a sí mismo en el sorteo.</p>
 						<div class="panel lit">
 							<div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:300px;--ax:max(24px, 50% - 150px);--ay:40px;--ay-sm:20px">
 								<div class="frag ui ui-mock" aria-hidden="true">
@@ -268,12 +233,12 @@ const mainAction = 'Escribir a datavia';
 					</article>
 					<article class="card m-nolift span-4">
 						<h3>Funciona sin descargar nada</h3>
-						<p>Capture y {cuentamos.name} se abren con un enlace y se instalan desde el navegador.</p>
+						<p>Capture y {grupea.name} se abren con un enlace y se instalan desde el navegador.</p>
 						<div class="panel lit">
 							<div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:300px;--ax:max(24px, 50% - 150px);--ay:40px;--ay-sm:20px">
 								<div class="frag ui ui-mock" aria-hidden="true">
 									<p class="frag__head">¿Instalar la aplicación?</p>
-									<div class="install"><span class="install__icon">C</span><div><b>{cuentamos.name}</b><small>{new URL(cuentamos.url).host}</small></div></div>
+									<div class="install"><span class="install__icon">G</span><div><b>{grupea.name}</b><small>{new URL(grupea.url).host}</small></div></div>
 									<div class="phone__actions"><span class="ph-btn ph-btn--ghost">Ahora no</span><span class="ph-btn">Instalar</span></div>
 								</div>
 							</div></div>
@@ -281,7 +246,7 @@ const mainAction = 'Escribir a datavia';
 					</article>
 					<article class="card m-nolift span-4">
 						<h3>Guarda solo lo necesario</h3>
-						<p>Capture borra los adjuntos al entregarlos y {cuentamos.name} solo usa cookies técnicas.</p>
+						<p>Capture borra los adjuntos al entregarlos y {grupea.name} solo usa cookies técnicas.</p>
 						<div class="panel lit">
 							<div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max:300px;--ax:max(24px, 50% - 150px);--ay:40px;--ay-sm:20px">
 								<div class="frag ui ui-mock" aria-hidden="true">
@@ -303,7 +268,7 @@ const mainAction = 'Escribir a datavia';
 			<div class="closing__cta close--type">
 				<div class="section-head">
 					<h2 id="close-h">Escribe a datavia</h2>
-					<p>Una demo de Capture, el aviso de Custia o cualquier duda sobre {cuentamos.name}: {email}</p>
+					<p>Una demo de Capture o cualquier duda sobre {grupea.name}: {email}</p>
 				</div>
 				<a class="btn btn--primary btn--xl btn--wide" href={contact}>{mainAction}<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"></path><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></a>
 			</div>
@@ -317,8 +282,7 @@ const mainAction = 'Escribir a datavia';
 						<h4>Aplicaciones</h4>
 						<ul>
 							<li><a href="#capture">Capture</a></li>
-							<li><a href="#cuentamos">{cuentamos.name}</a></li>
-							<li><a href="#custia">Custia</a></li>
+							<li><a href="#grupea">{grupea.name}</a></li>
 						</ul>
 					</div>
 					<div class="span-3 footer__col">

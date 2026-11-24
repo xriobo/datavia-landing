@@ -52,3 +52,17 @@ Acción principal, igual en menú, portada y cierre: «Escribir a datavia».
 ## Fuera de alcance
 
 Aviso legal y privacidad (faltan los datos del titular), despliegue, Email Routing y la imagen social definitiva.
+
+## Revisión del 2026-11-24
+
+- **Fuera Custia.** Es un producto de futuro y metía ruido: sin sección, sin enlaces y sin su cadena de hashes. Quedan
+  dos productos, Capture y Grupea (antes Cuentamos, rebautizada el 2026-11-21).
+- **Office va dentro de Capture**, como «la oficina de la asesoría», en preparación con la primera asesoría. No tiene
+  sección propia hasta que esté en producción.
+- **Tono editorial para toda la casa.** Titulares en Instrument Serif (el lenguaje clásico de la gama alta, también
+  para asesorías), texto en Atkinson Hyperlegible, papel marfil `#f7f5f0` y tinta azul noche `#1c232c`. La única
+  acción de la página es la tinta; cada producto conserva su color solo como identidad y dentro de sus maquetas
+  (azul `#1f5fd0` en Capture, verde azulado `#0f766e` en Grupea), mediante los tokens `--ui-brand*`.
+- **Iconos.** El de Grupea pasa a una «G» serif crema sobre verde azulado (el anterior, la «C» de Cuentamos, salía
+  recortado). Los de Capture y datavia se quedan.
+- La portada da un dato comprobable: los grupos de Grupea admiten hasta 200 personas.

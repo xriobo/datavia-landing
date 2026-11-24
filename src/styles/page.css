@@ -1,5 +1,5 @@
 /* Page CSS: solo lo que vive dentro de los visuales y el kit no trae (taste, system.md).
-   Las piezas de interfaz copian el aspecto real de cada app (Capture, Cuentamos y la tabla de Custia) en su
+   Las piezas de interfaz copian el aspecto real de cada app (Capture y Grupea) en su
    modo oscuro: en una página oscura la pantalla es oscura y el panel que la sostiene, claro (cards.md). */
 
 :root {
@@ -10,7 +10,6 @@
 	--ui-muted: #a4aeaa;
 	--ui-line: rgb(255 255 255 / .09);
 	--ui-chip: rgb(255 255 255 / .08);
-	--ui-tint: color-mix(in oklab, var(--p-accent) 20%, var(--ui-bg));
 	--ui-ok: #7fd9a8;
 	--ui-bad: #ff8a80;
 	--ui-shadow: 0 0 0 1px rgb(0 0 0 / .3), 0 24px 60px -28px rgb(0 0 0 / .65);
@@ -21,11 +20,10 @@
 	--ui-outline: color-mix(in oklab, var(--p-ink) 20%, transparent);
 
 	/* El panel iluminado de cada producto, en tono medio: claro frente a la página (unos 4:1) sin deslumbrar.
-	   Un color por producto, como identidad y nunca como acción (la única acción es el salvia de --p-action). */
-	--lit: #6f7f76;          /* datavia */
+	   Un color por producto, como identidad y nunca como acción (la única acción de la página es la tinta de --p-action). */
+	--lit: #7a746b;          /* datavia: piedra cálida, el marfil de la página en tono medio */
 	--lit-capture: #66778c;  /* pizarra azul, la familia del azul de Capture */
-	--lit-cuentamos: #66998f;/* verde azulado, la familia de Cuentamos (3:1 sobre su tarjeta, cards.md) */
-	--lit-custia: #8a7a5c;   /* latón, el de Custia en la landing anterior */
+	--lit-grupea: #66998f;   /* verde azulado, el de la marca de Grupea (3:1 sobre su tarjeta, cards.md) */
 }
 /* Tema claro: pantallas en su modo claro y paneles en tintes claros de cada producto, un paso más oscuros que la
    pantalla blanca que sostienen (cards.md) */
@@ -37,24 +35,40 @@
 	--ui-muted: #5a6672;
 	--ui-line: #e6e9ee;
 	--ui-chip: #eef1f4;
-	--ui-tint: color-mix(in oklab, var(--p-accent) 12%, white);
 	--ui-ok: #10633f;
 	--ui-bad: #b3261e;
 	--ui-shadow: 0 0 0 1px rgb(0 0 0 / .07), 0 24px 60px -28px rgb(16 24 40 / .45);
 	--ui-field: #c9d0d7;
 	--ui-doc: none;
-	--lit: #cfd9d4;
+	--lit: #dcd5c8;
 	--lit-capture: #c9d3e0;
-	--lit-cuentamos: #c3dcd7;
-	--lit-custia: #e2d8c4;
+	--lit-grupea: #c3dcd7;
 }
 
 #capture { --lit: var(--lit-capture); }
-#cuentamos { --lit: var(--lit-cuentamos); }
-#custia { --lit: var(--lit-custia); }
+#grupea { --lit: var(--lit-grupea); }
+
+/* Las maquetas llevan el color real de su app en botones, marcas y barras: el azul de Capture y el verde azulado
+   de Grupea. Fuera de ellas (las reglas) va la tinta de la casa. --ui-tint se repite en cada ámbito porque un var()
+   se resuelve donde se declara. */
+:root {
+	--ui-brand: var(--p-action); --ui-brand-ink: var(--p-action-ink); --ui-brand-text: var(--p-accent);
+	--ui-tint: color-mix(in oklab, var(--ui-brand-text) 20%, var(--ui-bg));
+}
+#capture, .d-win {
+	--ui-brand: #1f5fd0; --ui-brand-ink: #ffffff; --ui-brand-text: #6ea3ff;
+	--ui-tint: color-mix(in oklab, var(--ui-brand-text) 20%, var(--ui-bg));
+}
+#grupea, .d-card {
+	--ui-brand: #0f766e; --ui-brand-ink: #ffffff; --ui-brand-text: #5eead4;
+	--ui-tint: color-mix(in oklab, var(--ui-brand-text) 20%, var(--ui-bg));
+}
+:root[data-theme="light"] { --ui-tint: color-mix(in oklab, var(--ui-brand-text) 12%, white); }
+:root[data-theme="light"] :is(#capture, .d-win) { --ui-brand-text: #1f5fd0; --ui-tint: color-mix(in oklab, var(--ui-brand-text) 12%, white); }
+:root[data-theme="light"] :is(#grupea, .d-card) { --ui-brand-text: #0f766e; --ui-tint: color-mix(in oklab, var(--ui-brand-text) 12%, white); }
 /* Los paneles del kit (cards.css) y los marcos de esta página pintan con los tokens --ground-*: se derivan del
    --lit de cada sección, y html[data-ground] gana a la regla de system.css por ir después */
-html[data-ground], #capture, #cuentamos, #custia {
+html[data-ground], #capture, #grupea {
 	--ground-bg: var(--lit);
 	--ground-surface: color-mix(in oklab, var(--lit) 70%, white);
 	--ground-accent: color-mix(in oklab, var(--lit) 82%, black);
@@ -65,8 +79,8 @@ html[data-ground], #capture, #cuentamos, #custia {
 .skip:focus { width: auto; height: auto; clip-path: none; z-index: 20; padding: var(--s-2) var(--s-3); background: var(--bg); border-radius: var(--r-sm); }
 
 /* Pantallas: una en escritorio; dos en tableta y móvil, donde las columnas se apilan (layout-v4.md) */
-#cuentamos, #reglas { --hm: 2; }
-@media (min-width: 640px) and (max-width: 1279px) { #cuentamos, #reglas { --h: 2; } }
+#grupea, #reglas { --hm: 2; }
+@media (min-width: 640px) and (max-width: 1279px) { #grupea, #reglas { --h: 2; } }
 
 /* En el móvil cada sección crece con su contenido en vez de pisar la siguiente. El kit fija el alto a la pantalla, y
    en teléfonos estrechos o bajos (375 × 667, 360 × 640) el texto ocupa más y lo que no cabe se sale por encima de la
@@ -87,6 +101,8 @@ html[data-ground], #capture, #cuentamos, #custia {
 
 /* En el móvil el h1 a 38px, la talla de teléfono de layout-v4.md: así 48 caracteres caben en 3 líneas */
 @media (max-width: 639px) { .hero--collage h1 { font-size: 38px; } }
+/* Instrument Serif deja mucho aire sobre las mayúsculas: se recorta para que el titular arranque a la altura de la imagen */
+.hero--collage h1 { text-box: trim-start cap alphabetic; }
 
 /* El selector de tema: en el menú, un botón secundario cuadrado con el icono del tema al que lleva. Por debajo de
    1024 el kit pliega el menú y solo deja el botón principal, así que ahí vale el del pie (enlace de texto).
@@ -106,13 +122,13 @@ html[data-ground], #capture, #cuentamos, #custia {
 p.status { font-size: var(--t-body); color: var(--ink); }
 .status b { font-weight: 500; color: var(--ink); }
 
-/* El índice de los tres productos, al pie de la columna de texto de la portada (el hueco de .hero-facts del
-   kit, alineado con el pie de la imagen): que se vea desde el primer vistazo que son tres productos */
+/* El índice de los dos productos, al pie de la columna de texto de la portada (el hueco de .hero-facts del
+   kit, alineado con el pie de la imagen): que se vea desde el primer vistazo que son dos productos */
 @media (min-width: 1024px) {
 	.hero--collage .hero__text { align-self: stretch; display: flex; flex-direction: column; }
 	.hero--collage .hero__text > .products { margin-top: auto; }
 }
-.products { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.products { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
 .product { display: grid; gap: var(--s-2); align-content: start; justify-items: start; text-decoration: none; color: var(--ink); }
 .product img { width: 40px; height: 40px; border-radius: 10px; }
 .product__name { font-weight: 500; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: text-decoration-color var(--dur) var(--ease); }
@@ -125,18 +141,17 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 /* La marca de cada producto sobre su titular, como en la ficha de una app; en el móvil, en línea con el nombre.
    Es decorativa (el nombre va al lado), así que se pinta con CSS y no entra en el árbol de accesibilidad. */
 #capture { --mark: url("/marks/capture.png"); }
-#cuentamos { --mark: url("/marks/cuentamos.svg"); }
-#custia { --mark: url("/marks/custia.svg"); }
-:is(#capture, #cuentamos, #custia) h2::before {
+#grupea { --mark: url("/marks/grupea.svg"); }
+:is(#capture, #grupea) h2::before {
 	content: ""; display: block; width: 48px; height: 48px; margin-bottom: var(--s-4);
 	border-radius: 12px; background: var(--mark) center / cover no-repeat;
 }
-/* En escritorio la imagen de Capture y de Custia baja lo que ocupa la marca: el titular y la imagen quedan alineados
+/* En escritorio la imagen de Capture baja lo que ocupa la marca: el titular y la imagen quedan alineados
    arriba y la marca asoma encima, como una etiqueta */
-@media (min-width: 1024px) { :is(#capture, #custia) .grid > .frame { margin-top: calc(48px + var(--s-4)); } }
+@media (min-width: 1024px) { #capture .grid > .frame { margin-top: calc(48px + var(--s-4)); } }
 /* En el móvil no cabe sin mover el titular de la línea izquierda: ahí distinguen el nombre, el color del panel y la
    línea de audiencia, y los iconos están en el índice de la portada */
-@media (max-width: 639px) { :is(#capture, #cuentamos, #custia) h2::before { display: none; } }
+@media (max-width: 639px) { :is(#capture, #grupea) h2::before { display: none; } }
 
 /* El fondo iluminado del producto de cada sección, con una luz suave arriba y una sombra abajo */
 .hero__art, .frame.lit {
@@ -147,7 +162,7 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 	border-color: transparent;
 }
 /* En escritorio cada pantalla queda centrada en su panel; en móvil y tableta sigue arriba para no cortarse */
-@media (min-width: 1024px) { .frame > :is(.phone, .chain) { align-self: center; margin-top: 0; } }
+@media (min-width: 1024px) { .frame > .phone { align-self: center; margin-top: 0; } }
 
 /* ---------- ventana y tarjeta */
 .d-win { background: var(--ui-bg); color: var(--ui-ink); border-radius: 12px; overflow: hidden; font: 400 14px/1.4 var(--font-text); text-align: left; box-shadow: var(--ui-shadow); }
@@ -164,16 +179,16 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 .d-main__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .d-main__head h4 { font: 600 16px/1.2 var(--font-text); letter-spacing: -0.01em; margin: 0; }
 /* Los botones de las maquetas llevan el par de la página (relleno de acción y tonal): un solo sistema de botones */
-.d-btn { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 8px; background: var(--p-action); color: var(--p-action-ink); font-size: 13px; font-weight: 500; white-space: nowrap; }
+.d-btn { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 8px; background: var(--ui-brand); color: var(--ui-brand-ink); font-size: 13px; font-weight: 500; white-space: nowrap; }
 
 .d-card { background: var(--ui-bg); color: var(--ui-ink); border-radius: 12px; padding: 14px 16px; font: 400 14px/1.4 var(--font-text); text-align: left; box-shadow: var(--ui-shadow); }
 .d-card h5 { margin: 0; font: 600 14px/1.3 var(--font-text); }
 .d-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
-.d-chip { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 99px; font-size: 13px; font-weight: 500; background: var(--ui-tint); color: var(--p-accent); white-space: nowrap; }
+.d-chip { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 99px; font-size: 13px; font-weight: 500; background: var(--ui-tint); color: var(--ui-brand-text); white-space: nowrap; }
 .d-chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .hero__art > .ly-piece--note { left: var(--s-6); bottom: var(--s-6); width: 300px; z-index: 2; }
 .d-note__line { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 13px; color: var(--ui-muted); border-top: 1px solid var(--ui-line); }
-.d-note__line i { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--ui-tint); color: var(--p-accent); font-style: normal; font-size: 12px; font-weight: 700; }
+.d-note__line i { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--ui-tint); color: var(--ui-brand-text); font-style: normal; font-size: 12px; font-weight: 700; }
 .d-note__line b { font-weight: 500; color: var(--ui-ink); }
 /* Por debajo de 1280 la tarjeta taparía la ventana y se saldría de ella: la portada se queda con Capture */
 @media (max-width: 1279px) { .hero__art > .ly-piece--note { display: none; } }
@@ -205,10 +220,10 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 .cap-field small { grid-column: 1; color: var(--ui-muted); font-size: 13px; }
 .cap-field b { grid-column: 1; font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cap-field .ok { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
-.cap-field.is-focus { box-shadow: inset 3px 0 0 var(--p-accent); padding-left: 12px; }
+.cap-field.is-focus { box-shadow: inset 3px 0 0 var(--ui-brand-text); padding-left: 12px; }
 .ok { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 99px; font-size: 13px; font-weight: 500; background: var(--ui-chip); color: var(--ui-ink); white-space: nowrap; }
 .ok::before { content: "✓"; font-size: 12px; }
-.ok--ask { background: var(--ui-tint); color: var(--p-accent); }
+.ok--ask { background: var(--ui-tint); color: var(--ui-brand-text); }
 .ok--ask::before { content: "•"; }
 
 /* ---------- el móvil de Capture */
@@ -225,20 +240,20 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 .phone__label { font-size: 13px; color: var(--ui-muted); margin: 14px 0 8px; }
 .cap-docs--phone { gap: 8px; }
 .phone__actions { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; margin-top: 16px; }
-.ph-btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 14px; border-radius: 10px; background: var(--p-action); color: var(--p-action-ink); font: 500 14px/1 var(--font-text); white-space: nowrap; border: 0; }
+.ph-btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 14px; border-radius: 10px; background: var(--ui-brand); color: var(--ui-brand-ink); font: 500 14px/1 var(--font-text); white-space: nowrap; border: 0; }
 .ph-btn--ghost { background: transparent; color: var(--p-ink); box-shadow: inset 0 0 0 1px var(--ui-outline); }
 
-/* ---------- fragmentos de las tarjetas (Cuentamos y las reglas) */
+/* ---------- fragmentos de las tarjetas (Grupea y las reglas) */
 /* Mínimo del panel: 200 (el kit pone 264-340 en el propio .panel, por eso el selector va sobre él). La marca del
-   producto sobre el titular resta alto a la pantalla de Cuentamos; el panel crece igual hasta el pie de la sección
+   producto sobre el titular resta alto a la pantalla de Grupea; el panel crece igual hasta el pie de la sección
    (.fill), así que solo cambia cuando no hay sitio */
 .cards-3 .panel { --p-h: 200px; }
 /* De 1024 a 1279 el kit pone dos tarjetas por fila y deja la tercera sola: aquí, una por fila con el texto
    al lado de su panel (como la demo collage del kit). Los id ganan a la regla del kit, de 10 clases. */
 @media (min-width: 1024px) and (max-width: 1279px) {
-	#cuentamos .cards-3 > .card, #reglas .cards-3 > .card { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-rows: min-content min-content 1fr; column-gap: var(--s-6); }
-	#cuentamos .cards-3 > .card > :not(.panel), #reglas .cards-3 > .card > :not(.panel) { grid-column: 1; }
-	#cuentamos .cards-3 > .card > .panel, #reglas .cards-3 > .card > .panel { grid-column: 2; grid-row: 1 / -1; --p-h: 232px; margin: calc(var(--c-gap) - var(--c-pad)) calc(var(--c-gap) - var(--c-pad)) calc(var(--c-gap) - var(--c-pad)) 0; border-radius: calc(var(--c-r) - var(--c-gap)); }
+	#grupea .cards-3 > .card, #reglas .cards-3 > .card { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-rows: min-content min-content 1fr; column-gap: var(--s-6); }
+	#grupea .cards-3 > .card > :not(.panel), #reglas .cards-3 > .card > :not(.panel) { grid-column: 1; }
+	#grupea .cards-3 > .card > .panel, #reglas .cards-3 > .card > .panel { grid-column: 2; grid-row: 1 / -1; --p-h: 232px; margin: calc(var(--c-gap) - var(--c-pad)) calc(var(--c-gap) - var(--c-pad)) calc(var(--c-gap) - var(--c-pad)) 0; border-radius: calc(var(--c-r) - var(--c-gap)); }
 }
 .frag { background: var(--ui-bg); color: var(--ui-ink); border-radius: 12px; padding: 14px 16px 16px; font: 400 14px/1.4 var(--font-text); box-shadow: var(--ui-shadow); }
 .frag__head { font: 600 14px/1.3 var(--font-text); margin-bottom: 8px; }
@@ -251,7 +266,7 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 .pot__sum { font-size: 13px; color: var(--ui-muted); }
 .pot__sum b { font-size: 18px; font-weight: 600; color: var(--ui-ink); }
 .pot__bar { height: 6px; border-radius: 99px; background: var(--ui-chip); margin: 8px 0 6px; overflow: hidden; }
-.pot__bar > i { display: block; height: 100%; width: var(--v); border-radius: inherit; background: var(--p-accent); }
+.pot__bar > i { display: block; height: 100%; width: var(--v); border-radius: inherit; background: var(--ui-brand); }
 .frag__label { font-size: 13px; color: var(--ui-muted); margin-top: 4px; }
 .frag__input { display: flex; justify-content: space-between; align-items: center; height: 36px; padding: 0 2px; margin: 0 0 12px; border-bottom: 2px solid var(--ui-field); font: 500 14px/1 var(--font-mono); color: var(--ui-ink); }
 .frag__input.is-bad { border-bottom-color: var(--ui-bad); margin-bottom: 4px; }
@@ -260,17 +275,5 @@ p.status { font-size: var(--t-body); color: var(--ink); }
 .install { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--ui-line); }
 .install b { display: block; font-weight: 500; }
 .install small { color: var(--ui-muted); font-size: 13px; }
-.install__icon { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #0f766e; color: #fff; font-weight: 600; }
+.install__icon { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #0f766e; color: #fffdf9; font: 400 26px/1 var(--font-display); }
 
-/* ---------- Custia: la cadena de huellas */
-.chain { width: min(100%, 560px); align-self: flex-start; margin-top: var(--s-5); }
-@media (max-width: 639px) { .chain { margin-top: 0; } .chain__body { padding: 12px 14px 14px; gap: 10px; } .chain__table td { padding-block: 8px; } }
-.chain__body { padding: 16px 18px 18px; display: grid; gap: 14px; }
-.chain__table { width: 100%; border-collapse: collapse; font: 400 13px/1.4 var(--font-mono); }
-.chain__table th { text-align: left; font: 500 13px/1.4 var(--font-text); color: var(--ui-muted); padding: 0 8px 8px 0; border-bottom: 1px solid var(--ui-line); }
-.chain__table td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--ui-line); white-space: nowrap; }
-.chain__table tr.is-broken td { color: var(--ui-bad); }
-.chain__status { font-size: 14px; color: var(--ui-ok); min-height: 3em; }
-.chain__status.is-broken { color: var(--ui-bad); }
-.chain__toggle { justify-self: start; }
-@media (max-width: 1279px) { .chain__prev { display: none; } }
